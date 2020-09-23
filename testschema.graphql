@@ -1,0 +1,190 @@
+﻿schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+type DogProfile {
+  age: String
+  breed: String
+  color: String
+  dog: String!
+  owner: String!
+  weight: String
+}
+
+type DogProfileConnection {
+  items: [DogProfile]
+  nextToken: String
+}
+
+type JobProfile {
+  distance: String
+  dog: String
+  end_time: String
+  geo_url: String
+  id: String!
+  owner: String
+  start_time: String
+  status: String
+  walker: String
+}
+
+type JobProfileConnection {
+  items: [JobProfile]
+  nextToken: String
+}
+
+type Mutation {
+  createDogProfile(input: CreateDogProfileInput!): DogProfile
+  createJobProfile(input: CreateJobProfileInput!): JobProfile
+  deleteDogProfile(input: DeleteDogProfileInput!): DogProfile
+  deleteJobProfile(input: DeleteJobProfileInput!): JobProfile
+  updateDogProfile(input: UpdateDogProfileInput!): DogProfile
+  updateJobProfile(input: UpdateJobProfileInput!): JobProfile
+}
+
+type Query {
+  getDogProfile(dog: String!, owner: String!): DogProfile
+  getJobProfile(id: String!): JobProfile
+  listDogProfiles(filter: TableDogProfileFilterInput, limit: Int, nextToken: String): DogProfileConnection
+  listJobProfiles(filter: TableJobProfileFilterInput, limit: Int, nextToken: String): JobProfileConnection
+  queryJobProfilesByOwnerIndex(after: String, first: Int, owner: String!): JobProfileConnection
+  queryJobProfilesByWalkerIndex(after: String, first: Int, walker: String!): JobProfileConnection
+}
+
+type Subscription {
+  onCreateDogProfile(age: String, breed: String, color: String, dog: String, owner: String): DogProfile @aws_subscribe(mutations : ["createDogProfile"])
+  onCreateJobProfile(dog: String, geo_url: String, id: String, owner: String, walker: String): JobProfile @aws_subscribe(mutations : ["createJobProfile"])
+  onDeleteDogProfile(age: String, breed: String, color: String, dog: String, owner: String): DogProfile @aws_subscribe(mutations : ["deleteDogProfile"])
+  onDeleteJobProfile(dog: String, geo_url: String, id: String, owner: String, walker: String): JobProfile @aws_subscribe(mutations : ["deleteJobProfile"])
+  onUpdateDogProfile(age: String, breed: String, color: String, dog: String, owner: String): DogProfile @aws_subscribe(mutations : ["updateDogProfile"])
+  onUpdateJobProfile(dog: String, geo_url: String, id: String, owner: String, walker: String): JobProfile @aws_subscribe(mutations : ["updateJobProfile"])
+}
+
+input CreateDogProfileInput {
+  age: String
+  breed: String
+  color: String
+  dog: String!
+  owner: String!
+  weight: String
+}
+
+input CreateJobProfileInput {
+  distance: String
+  dog: String
+  end_time: String
+  geo_url: String
+  id: String!
+  owner: String
+  start_time: String
+  status: String
+  walker: String
+}
+
+input DeleteDogProfileInput {
+  dog: String!
+  owner: String!
+}
+
+input DeleteJobProfileInput {
+  id: String!
+}
+
+input TableBooleanFilterInput {
+  eq: Boolean
+  ne: Boolean
+}
+
+input TableDogProfileFilterInput {
+  age: TableStringFilterInput
+  breed: TableStringFilterInput
+  color: TableStringFilterInput
+  dog: TableStringFilterInput
+  owner: TableStringFilterInput
+  weight: TableStringFilterInput
+}
+
+input TableFloatFilterInput {
+  between: [Float]
+  contains: Float
+  eq: Float
+  ge: Float
+  gt: Float
+  le: Float
+  lt: Float
+  ne: Float
+  notContains: Float
+}
+
+input TableIDFilterInput {
+  beginsWith: ID
+  between: [ID]
+  contains: ID
+  eq: ID
+  ge: ID
+  gt: ID
+  le: ID
+  lt: ID
+  ne: ID
+  notContains: ID
+}
+
+input TableIntFilterInput {
+  between: [Int]
+  contains: Int
+  eq: Int
+  ge: Int
+  gt: Int
+  le: Int
+  lt: Int
+  ne: Int
+  notContains: Int
+}
+
+input TableJobProfileFilterInput {
+  distance: TableStringFilterInput
+  dog: TableStringFilterInput
+  end_time: TableStringFilterInput
+  geo_url: TableStringFilterInput
+  id: TableStringFilterInput
+  owner: TableStringFilterInput
+  start_time: TableStringFilterInput
+  status: TableStringFilterInput
+  walker: TableStringFilterInput
+}
+
+input TableStringFilterInput {
+  beginsWith: String
+  between: [String]
+  contains: String
+  eq: String
+  ge: String
+  gt: String
+  le: String
+  lt: String
+  ne: String
+  notContains: String
+}
+
+input UpdateDogProfileInput {
+  age: String
+  breed: String
+  color: String
+  dog: String!
+  owner: String!
+  weight: String
+}
+
+input UpdateJobProfileInput {
+  distance: String
+  dog: String
+  end_time: String
+  geo_url: String
+  id: String!
+  owner: String
+  start_time: String
+  status: String
+  walker: String
+}

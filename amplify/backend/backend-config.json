@@ -1,0 +1,52 @@
+{
+	"api": {
+		"dogwalkapp": {
+			"service": "AppSync",
+			"providerPlugin": "awscloudformation",
+			"output": {
+				"authConfig": {
+					"defaultAuthentication": {
+						"authenticationType": "API_KEY",
+						"apiKeyConfig": {
+							"apiKeyExpirationDays": 7,
+							"description": "dogwalkapp"
+						}
+					},
+					"additionalAuthenticationProviders": []
+				}
+			}
+		}
+	},
+	"auth": {
+		"dogwalkapp12afaa1a": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [],
+			"customAuth": false
+		}
+	},
+	"function": {
+		"S3Trigger12587d28": {
+			"service": "Lambda",
+			"providerPlugin": "awscloudformation",
+			"build": true
+		}
+	},
+	"storage": {
+		"dogphotos": {
+			"service": "S3",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "function",
+					"resourceName": "S3Trigger12587d28",
+					"attributes": [
+						"Name",
+						"Arn",
+						"LambdaExecutionRole"
+					]
+				}
+			]
+		}
+	}
+}
