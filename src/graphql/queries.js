@@ -10,6 +10,7 @@ export const getDogProfile = /* GraphQL */ `
       color
       age
       weight
+      photokey
     }
   }
 `;
@@ -27,6 +28,7 @@ export const listDogProfiles = /* GraphQL */ `
         color
         age
         weight
+        photokey
       }
       nextToken
     }

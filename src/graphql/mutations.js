@@ -10,6 +10,7 @@ export const createDogProfile = /* GraphQL */ `
       color
       age
       weight
+      photokey
     }
   }
 `;
@@ -22,6 +23,7 @@ export const updateDogProfile = /* GraphQL */ `
       color
       age
       weight
+      photokey
     }
   }
 `;
@@ -34,6 +36,7 @@ export const deleteDogProfile = /* GraphQL */ `
       color
       age
       weight
+      photokey
     }
   }
 `;
