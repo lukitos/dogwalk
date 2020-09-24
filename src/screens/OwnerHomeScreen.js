@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Button } from 'react-native';
 import { Auth } from 'aws-amplify';
 
@@ -11,7 +11,15 @@ const OwnerHomeScreen = ({navigation}) => {
         }
     }
 
-    console.log('OwnerHomeScreen Auth', Auth);
+    useEffect(() => {
+        checkUser(); 
+    });
+
+    async function checkUser() {
+        const user = await Auth.currentAuthenticatedUser();
+        console.log('user:', user);
+        console.log('user attributes: ', user.attributes);
+    }
 
     return (
         <View>

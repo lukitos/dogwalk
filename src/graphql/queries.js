@@ -119,3 +119,13 @@ export const queryJobProfilesByWalkerIndex = /* GraphQL */ `
     }
   }
 `;
+export const getRekognition = /* GraphQL */ `
+  query GetRekognition($key: String!, $breed: String) {
+    getRekognition(key: $key, breed: $breed) {
+      key
+      breed
+      valid
+      result
+    }
+  }
+`;

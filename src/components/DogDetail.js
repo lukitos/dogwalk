@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import { Storage } from 'aws-amplify';
 
 const DogDetail = (props) => {
-    console.log('DogDetail props', props);
+    // console.log('DogDetail props', props);
 
     const { owner,
         walker,
@@ -12,10 +12,10 @@ const DogDetail = (props) => {
     
     const [photoURI, setPhotoURI] = useState(null);
 
-    console.log('DogDetail Photokey', photokey);
+    // console.log('DogDetail Photokey', photokey);
     Storage.get(photokey)
     .then( result => {
-        console.log('DogDetail Storage.get result', result);
+        // console.log('DogDetail Storage.get result', result);
         setPhotoURI(result);
     })
 

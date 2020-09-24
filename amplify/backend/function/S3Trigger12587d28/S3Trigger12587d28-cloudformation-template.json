@@ -61,7 +61,8 @@
 				"Code": {
 					"S3Bucket": "amplify-dogwalkapp-dev-163844-deployment",
 					"S3Key": "amplify-builds/S3Trigger12587d28-2b4a4d6a6d6568635976-build.zip"
-				}
+				},
+				"Layers": []
 			}
 		},
 		"LambdaExecutionRole": {

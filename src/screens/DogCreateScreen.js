@@ -5,6 +5,7 @@ import { API, Storage, graphqlOperation } from 'aws-amplify';
 import { S3Image } from 'aws-amplify-react-native';
 import ImagePicker from 'react-native-image-picker';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
+import { getRekognition } from '../graphql/queries';
 import { createDogProfile } from '../graphql/mutations';
 import { Buffer } from 'buffer';
 
@@ -50,6 +51,25 @@ const DogCreateScreen = ({ navigation }) => {
     });
   }
 
+  const validatePhoto = async (s3Key, breed) => {
+    console.log('in validatePhoto s3Key ', s3Key);
+    console.log('in validatePhoto breed ', breed);
+    try {
+          const resultData = await API.graphql(
+              graphqlOperation(getRekognition, { key: s3Key, breed: breed })
+          );
+          const { valid } = resultData.data.getRekognition;
+          if (valid) {
+            console.log('getRekognition valid', valid);
+          } else {
+            console.log('ERROR: getRekognition invalid', valid);
+          }        
+          // console.log('getRekognition result', resultData.data.getRekognition.result);
+      } catch (err) {
+          console.log(err);
+      }
+  }
+
   const [results, setResults] = useState([]);
   const processResults = async (inputData) => {
       console.log('processResults inputData', inputData);
@@ -69,22 +89,18 @@ const DogCreateScreen = ({ navigation }) => {
     console.log('onSubmit data', data);
     // console.log('onSubmit file', file);
     var updatedData;
-    const resp = await fetch(file.uri);
-    const blob = await resp.blob();
+    let resp = await fetch(file.uri);
+    let blob = await resp.blob();
     console.log('blob', blob);
 
     Storage.put(file.name, blob, { contentType: file.type })
       .then (result => {
-        console.log('onSubmit type', file.type);
-        console.log('onSubmit result', result);
+        // console.log('onSubmit type', file.type);
+        // console.log('onSubmit result', result);
         updatedData = {...data, ...{photokey: result.key}};
         console.log('onSubmit updated data', updatedData);
+        validatePhoto(`public/${result.key}`, data.breed);
         processResults(updatedData);
-        // Storage.get(result.key)
-        //   .then( result => {
-        //     console.log('Storage.get result', result);
-        //     updatePhoto(result);
-        //   })
       })
       .catch(err => console.log(err));
 
@@ -125,6 +141,20 @@ const DogCreateScreen = ({ navigation }) => {
           />
         )}
         name="dog"
+        defaultValue=""
+      />
+      <Controller
+        control={control}
+        render={({ onChange, onBlur, value }) => (
+          <TextInput
+            style={styles.input}
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            placeholder="Enter dog's breed"
+            value={value}
+          />
+        )}
+        name="breed"
         defaultValue=""
       />
       <Button title="Upload Photo" onPress={chooseImage} />

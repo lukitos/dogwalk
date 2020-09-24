@@ -63,6 +63,8 @@ type JobProfileConnection {
 
 type Rekognition {
 	key: String!
+  	breed: String
+	valid: Boolean
 	result: String
 }
 
@@ -82,7 +84,7 @@ type Query {
 	listJobProfiles(filter: TableJobProfileFilterInput, limit: Int, nextToken: String): JobProfileConnection
 	queryJobProfilesByOwnerIndex(owner: String!, first: Int, after: String): JobProfileConnection
 	queryJobProfilesByWalkerIndex(walker: String!, first: Int, after: String): JobProfileConnection
-	getRekognition(key: String!): Rekognition
+	getRekognition(key: String!, breed: String): Rekognition
 }
 
 type Subscription {
