@@ -1,14 +1,22 @@
 import React from 'react';
 import { StyleSheet, View, Text, Button } from 'react-native';
+import { Auth } from 'aws-amplify';
 
 const WalkerHomeScreen = ({navigation}) => {
+    async function signOut() {
+        try {
+            await Auth.signOut({ global: true });
+        } catch (error) {
+            console.log('error signing out: ', error);
+        }
+    }
+    
     return (
         <View>
-            <Text style={styles.text}>Home - Dog Walker</Text>
             <Button
-                title="Go to Job Profiles"
-                onPress={() => navigation.navigate('JobList')}
-            ></Button>
+                title='Sign Out'
+                onPress={signOut} />
+            <Text style={styles.text}>Home - Dog Walker</Text>
         </View>
     );
 }

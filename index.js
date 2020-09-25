@@ -3,6 +3,13 @@ import App from './App';
 import {name as appName} from './app.json';
 import Amplify from 'aws-amplify';
 import config from './aws-exports';
-Amplify.configure(config);
+// import StoreProvider from './utils/store';
+
+Amplify.configure({
+  ...config,
+  Analytics: {
+    disabled: true,
+  },
+});
 
 AppRegistry.registerComponent(appName, () => App);

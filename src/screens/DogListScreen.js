@@ -4,14 +4,21 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { ListItem, Button } from 'react-native-elements';
 import { listDogProfiles } from '../graphql/queries';
 
-const DogListScreen = ({navigation}) => {
+const DogListScreen = ({route, navigation}) => {
+    console.log('DogListScreen route params', route.params);
+
     const [dogs, setDogs] = useState([]);
+    // console.log('DogListScrren dogs', dogs);
+    // let dogs = [];
 
     const fetchDogs = async () => {
+        console.log('fetchDogs')
         try {
             const dogData = await API.graphql(graphqlOperation(listDogProfiles));
-            // console.log('dogData', dogData.data.listDogProfiles);
+            console.log('dogData', dogData.data.listDogProfiles.items);
             setDogs(dogData.data.listDogProfiles.items);
+            // dogs = dogData.data.listDogProfiles.items;
+            // console.log('dogData', dogData);
         } catch (err) {
             console.log('error occured!');
             console.log(err);
@@ -21,6 +28,10 @@ const DogListScreen = ({navigation}) => {
     useEffect(() => {
         fetchDogs();
     }, []);
+
+    // useEffect(() => {
+    //     fetchDogs();
+    // });
 
     return (
         <View>
