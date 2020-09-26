@@ -39,6 +39,7 @@ export const getJobProfile = /* GraphQL */ `
     getJobProfile(id: $id) {
       id
       owner
+      owner_email
       walker
       dog
       geo_url
@@ -59,6 +60,7 @@ export const listJobProfiles = /* GraphQL */ `
       items {
         id
         owner
+        owner_email
         walker
         dog
         geo_url
@@ -81,6 +83,7 @@ export const queryJobProfilesByOwnerIndex = /* GraphQL */ `
       items {
         id
         owner
+        owner_email
         walker
         dog
         geo_url
@@ -107,6 +110,7 @@ export const queryJobProfilesByWalkerIndex = /* GraphQL */ `
       items {
         id
         owner
+        owner_email
         walker
         dog
         geo_url

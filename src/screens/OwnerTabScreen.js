@@ -60,8 +60,10 @@ const DogStackScreen = () => {
   );
 }
 
-const OwnerTabScreen = () => {
-    return (
+const OwnerTabScreen = (props) => {
+  console.log('OwnerTabScreen props', props);
+
+  return (
     <NavigationContainer>
       <Tab.Navigator initialRouteName="HomeOwner">
         <Tab.Screen 

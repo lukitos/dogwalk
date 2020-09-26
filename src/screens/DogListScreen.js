@@ -1,19 +1,40 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, Text, FlatList } from 'react-native';
-import { API, graphqlOperation } from 'aws-amplify';
+import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { ListItem, Button } from 'react-native-elements';
 import { listDogProfiles } from '../graphql/queries';
 import { DogwalkContext } from '../context/DogwalkContext';
 
 const DogListScreen = ({route, navigation}) => {
     const [state, dispatch] = useContext(DogwalkContext);
+    const [email, updateEmail] = useState('');
+    const [owner, updateOwner] = useState('');
 
-    console.log('before fetchDogs');
+    console.log('DogListScreen state', state);
+    // console.log('DogListScreen graphqlOperation listDogProfiles', listDogProfiles);
 
-    const fetchDogs = async () => {
+    useEffect(() => {
+        checkUser(); 
+    }, []);
+
+    async function checkUser() {
+        const user = await Auth.currentAuthenticatedUser();
+        console.log('DogListScreen user attributes: ', user.attributes);
+        updateEmail(user.attributes.email);
+        updateOwner(user.username);
+        fetchDogs(user.username);
+    }
+
+    const fetchDogs = async (theOwner) => {
         console.log('fetchDogs')
         try {
-            const dogData = await API.graphql(graphqlOperation(listDogProfiles));
+            // const dogData = await API.graphql(graphqlOperation(listDogProfiles));
+            // console.log('DogListScreen graphqlOperation filter', { owner: { beginsWith: theOwner } });
+            const dogData = await API.graphql(
+                graphqlOperation(listDogProfiles, {
+                    filter: { owner: { beginsWith: theOwner } }
+                })
+            );
             console.log('dogData', dogData.data.listDogProfiles.items);
             dispatch ({
                 type: 'REFRESH',
@@ -24,10 +45,6 @@ const DogListScreen = ({route, navigation}) => {
             console.log(err);
         }
     }
-
-    useEffect(() => {
-        fetchDogs();
-    }, []);
 
     console.log('state', state);
 

@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -18,10 +18,10 @@ const App: () => React$Node = () => {
 
   useEffect(() => {
       checkUser(); 
-  });
+  }, []);
 
   async function checkUser() {
-      const user = await Auth.currentAuthenticatedUser();
+      user = await Auth.currentAuthenticatedUser();
       // console.log('App user attributes: ', user.attributes);
       // console.log('App user name: ', user.username);
       updateUsername(user.username);
@@ -30,7 +30,7 @@ const App: () => React$Node = () => {
   if (username.includes('owner')) {
     return (
       <DogwalkContextProvider>
-        <OwnerTabScreen />
+        <OwnerTabScreen user={username} />
       </DogwalkContextProvider>
     );
   } else {

@@ -11,20 +11,25 @@ import { DogwalkContext } from '../context/DogwalkContext';
 import { listDogProfiles } from '../graphql/queries';
 
 const DogCreateScreen = ({ navigation }) => {
+
+  console.log('DogCreateScreen graphqlOp', listDogProfiles);
+
   const [file, updateFile] = useState(null);
   const [photo, updatePhoto] = useState('');
   const [email, updateEmail] = useState('');
+  const [owner, updateOwner] = useState('');
   const [state, dispatch] = useContext(DogwalkContext);
 
   useEffect(() => {
     checkUser(); 
-  });
+  }, []);
 
   async function checkUser() {
     const user = await Auth.currentAuthenticatedUser();
     // console.log('DogCreateScreen user:', user);
     console.log('DogCreateScreen user attributes: ', user.attributes);
     updateEmail(user.attributes.email);
+    updateOwner(user.username);
   }
   
   const chooseImage = () => {
@@ -86,9 +91,13 @@ const DogCreateScreen = ({ navigation }) => {
   }
 
   const fetchDogs = async () => {
-      console.log('DogCreateScreen fetchDogs')
       try {
-          const dogData = await API.graphql(graphqlOperation(listDogProfiles));
+          // const dogData = await API.graphql(graphqlOperation(listDogProfiles));
+          const dogData = await API.graphql(
+              graphqlOperation(listDogProfiles, {
+                  filter: { owner: { beginsWith: owner } }
+              })
+          );
           console.log('DogCreateScreen fetchDogs', dogData);
           dispatch ({
               type: 'REFRESH',
@@ -130,7 +139,7 @@ const DogCreateScreen = ({ navigation }) => {
         // console.log('onSubmit result', result);
         updatedData = {
           ...data, 
-          ...{owner: email, photokey: result.key}
+          ...{owner: owner, photokey: result.key}
         };
         console.log('onSubmit updated data', updatedData);
         validatePhoto(`public/${result.key}`, data.breed, updatedData);

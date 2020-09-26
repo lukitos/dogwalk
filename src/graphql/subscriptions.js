@@ -93,6 +93,7 @@ export const onCreateJobProfile = /* GraphQL */ `
     ) {
       id
       owner
+      owner_email
       walker
       dog
       geo_url
@@ -120,6 +121,7 @@ export const onUpdateJobProfile = /* GraphQL */ `
     ) {
       id
       owner
+      owner_email
       walker
       dog
       geo_url
@@ -147,6 +149,7 @@ export const onDeleteJobProfile = /* GraphQL */ `
     ) {
       id
       owner
+      owner_email
       walker
       dog
       geo_url

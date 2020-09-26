@@ -1,31 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Button, FlatList, TouchableHighlight } from 'react-native';
-import { API, graphqlOperation } from 'aws-amplify';
+import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { ListItem } from 'react-native-elements';
-import { listJobProfiles } from '../graphql/queries';
+import { queryJobProfilesByOwnerIndex } from '../graphql/queries';
 
 const JobListScreen = ({navigation}) => {
-    // console.log('JobListScreen navigation', navigation);
     const [jobs, setJobs] = useState([]);
+    const [email, updateEmail] = useState('');
+    const [owner, updateOwner] = useState('');
 
-    const fetchJobs = async () => {
+    useEffect(() => {
+      checkUser(); 
+    }, []);
+
+    async function checkUser() {
+      const user = await Auth.currentAuthenticatedUser();
+      console.log('JobCreate username:', user.username);
+      console.log('JobCreate user attributes: ', user.attributes);
+      updateEmail(user.attributes.email);
+      updateOwner(user.username);
+      fetchJobs(user.username);
+    }
+
+    const fetchJobs = async (theOwner) => {
         try {
             const jobData = await API.graphql(
-                graphqlOperation(listJobProfiles, {
-                    filter: { owner: { beginsWith: "cottonlukito@gmail.com" } }
-                })
+                graphqlOperation(queryJobProfilesByOwnerIndex, {owner: theOwner})
             );
-            // console.log('JobListScreen jobData', jobData.data.listJobProfiles);
-            const jobs = jobData.data.listJobProfiles.items;
+            console.log('JobListScreen jobData', jobData);
+            const jobs = jobData.data.queryJobProfilesByOwnerIndex.items;
             setJobs(jobs);
         } catch (err) {
             console.log(err);
         }
     }
-
-    useEffect(() => {
-        fetchJobs();
-    }, []);
 
     return (
         <View>

@@ -2,12 +2,18 @@ import React, { useReducer, createContext } from "react";
 export const DogwalkContext = createContext();
 
 const initialState = {
-    dogs: {}
+    dogs: [],
+    // jobs: []
 };
 
 const reducer = (state, action) => {
     switch (action.type) {
-        case "REFRESH":
+        // case 'REFRESH_JOB':
+        //     console.log('in reducer REFRESH_JOB', state);
+        //     return {
+        //         jobs: action.payload
+        //     };
+        case 'REFRESH':
             console.log('in reducer REFRESH', state);
             return {
                 dogs: action.payload
@@ -15,7 +21,7 @@ const reducer = (state, action) => {
         default:
             console.log('in reducer DEFAULT', [...state.dogs, action.payload]);
             return {
-                dogs: action.payload
+                state
             }
     }
 };

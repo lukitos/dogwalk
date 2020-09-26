@@ -11,6 +11,7 @@
 input CreateJobProfileInput {
 	id: String!
 	owner: String
+	owner_email: String
 	walker: String
 	dog: String
 	geo_url: String
@@ -47,6 +48,7 @@ type DogProfileConnection {
 type JobProfile {
 	id: String!
 	owner: String
+	owner_email: String
 	walker: String
 	dog: String
 	geo_url: String

@@ -45,6 +45,7 @@ export const createJobProfile = /* GraphQL */ `
     createJobProfile(input: $input) {
       id
       owner
+      owner_email
       walker
       dog
       geo_url
@@ -60,6 +61,7 @@ export const updateJobProfile = /* GraphQL */ `
     updateJobProfile(input: $input) {
       id
       owner
+      owner_email
       walker
       dog
       geo_url
@@ -75,6 +77,7 @@ export const deleteJobProfile = /* GraphQL */ `
     deleteJobProfile(input: $input) {
       id
       owner
+      owner_email
       walker
       dog
       geo_url
