@@ -68,6 +68,13 @@ type Rekognition {
 	result: String
 }
 
+type SNS {
+	sns_type: String
+	walker_email: String
+	owner_email: String
+	dog_name: String
+}
+
 type Mutation {
 	createDogProfile(input: CreateDogProfileInput!): DogProfile
 	updateDogProfile(input: UpdateDogProfileInput!): DogProfile
@@ -85,6 +92,7 @@ type Query {
 	queryJobProfilesByOwnerIndex(owner: String!, first: Int, after: String): JobProfileConnection
 	queryJobProfilesByWalkerIndex(walker: String!, first: Int, after: String): JobProfileConnection
 	getRekognition(key: String!, breed: String): Rekognition
+	sendSNS(sns_type: String, walker_email: String, owner_email: String, dog_name: String): SNS
 }
 
 type Subscription {

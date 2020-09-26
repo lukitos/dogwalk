@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Button } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import JobDetail from '../components/JobDetail';
 import { getJobProfile } from '../graphql/queries';
+import { sendSns } from '../graphql/queries';
 
 const JobDetailScreen = ({ route, navigation }) => {
     const jobid = route.params.id;
@@ -27,8 +28,24 @@ const JobDetailScreen = ({ route, navigation }) => {
     }, []);
 
     console.log('JobDetailScreen results', results);
+
+    const startWalking = async() => {
+        console.log('startWalking');
+        try {
+            const resultData = await API.graphql(
+                graphqlOperation(sendSns, { sns_type: 'Start Walking', dog_name: results.dog, owner_email: results.owner, walker_email: results.walker })
+            );
+            console.log('startWalking items', resultData);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     return (
-        <JobDetail job={results} />
+        <View>
+            <Button title="Start Walking" onPress={startWalking} />
+            <JobDetail job={results} />
+        </View>
     );
 }
 

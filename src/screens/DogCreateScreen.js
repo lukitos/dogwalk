@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TextInput, Button, Image, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { API, Storage, graphqlOperation } from 'aws-amplify';
-// import { S3Image } from 'aws-amplify-react-native';
 import { Auth } from 'aws-amplify';
 import ImagePicker from 'react-native-image-picker';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 import { getRekognition } from '../graphql/queries';
 import { createDogProfile } from '../graphql/mutations';
-import { Buffer } from 'buffer';
+import { DogwalkContext } from '../context/DogwalkContext';
+import { listDogProfiles } from '../graphql/queries';
 
 const DogCreateScreen = ({ navigation }) => {
   const [file, updateFile] = useState(null);
   const [photo, updatePhoto] = useState('');
   const [email, updateEmail] = useState('');
+  const [state, dispatch] = useContext(DogwalkContext);
 
   useEffect(() => {
     checkUser(); 
@@ -84,16 +85,20 @@ const DogCreateScreen = ({ navigation }) => {
     }
   }
 
-  // const fetchDogs = async () => {
-  //     try {
-  //         const dogData = await API.graphql(graphqlOperation(listDogProfiles));
-  //         // console.log('dogData', dogData.data.listDogProfiles);
-  //         setDogs(dogData.data.listDogProfiles.items);
-  //     } catch (err) {
-  //         console.log('error occured!');
-  //         console.log(err);
-  //     }
-  // }
+  const fetchDogs = async () => {
+      console.log('DogCreateScreen fetchDogs')
+      try {
+          const dogData = await API.graphql(graphqlOperation(listDogProfiles));
+          console.log('DogCreateScreen fetchDogs', dogData);
+          dispatch ({
+              type: 'REFRESH',
+              payload: dogData.data.listDogProfiles.items
+          });
+      } catch (err) {
+          console.log('error occured!');
+          console.log(err);
+      }
+  }
 
   const [results, setResults] = useState([]);
   const processResults = async (inputData) => {
@@ -104,7 +109,7 @@ const DogCreateScreen = ({ navigation }) => {
           graphqlOperation(createDogProfile, { input: inputData })
         );
         setResults(resultData.data.createDogProfile);
-        // fetchDogs();
+        fetchDogs();
         navigation.navigate('DogList', { owner: inputData.owner, dog: inputData.dog});
     } catch (err) {
         console.log(err);
@@ -134,8 +139,6 @@ const DogCreateScreen = ({ navigation }) => {
 
       console.log('onSubmit data', data);
   }
-
-  // const [imageKey, setImageKey] = useState("public/IMG-20200424-WA0004.jpg")
 
   return (
     <View style={styles.container}>
@@ -170,9 +173,6 @@ const DogCreateScreen = ({ navigation }) => {
       />
       <Button title="Upload Photo" onPress={chooseImage} />
       {file ? <Image source={{uri: file.uri}} style={{ width: 100, height: 100 }} /> : null}
-      {/* <View style={styles.container}>
-        <S3Image style={styles.tinyLogo} resizeMode="center" level="private" imgKey={imageKey} />
-      </View> */}
       <Text>{file ? file.name : null}</Text>
       {photoValidation ? null : <Text>Invalid Photo, Please try uploading again!</Text>}
     </View>

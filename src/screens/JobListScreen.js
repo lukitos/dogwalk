@@ -12,7 +12,7 @@ const JobListScreen = ({navigation}) => {
         try {
             const jobData = await API.graphql(
                 graphqlOperation(listJobProfiles, {
-                    filter: { owner: { beginsWith: "Owner1@gmail.com" } }
+                    filter: { owner: { beginsWith: "cottonlukito@gmail.com" } }
                 })
             );
             // console.log('JobListScreen jobData', jobData.data.listJobProfiles);

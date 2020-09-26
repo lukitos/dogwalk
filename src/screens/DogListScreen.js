@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, Text, FlatList } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { ListItem, Button } from 'react-native-elements';
 import { listDogProfiles } from '../graphql/queries';
+import { DogwalkContext } from '../context/DogwalkContext';
 
 const DogListScreen = ({route, navigation}) => {
-    console.log('DogListScreen route params', route.params);
+    const [state, dispatch] = useContext(DogwalkContext);
 
-    const [dogs, setDogs] = useState([]);
-    // console.log('DogListScrren dogs', dogs);
-    // let dogs = [];
+    console.log('before fetchDogs');
 
     const fetchDogs = async () => {
         console.log('fetchDogs')
         try {
             const dogData = await API.graphql(graphqlOperation(listDogProfiles));
             console.log('dogData', dogData.data.listDogProfiles.items);
-            setDogs(dogData.data.listDogProfiles.items);
-            // dogs = dogData.data.listDogProfiles.items;
-            // console.log('dogData', dogData);
+            dispatch ({
+                type: 'REFRESH',
+                payload: dogData.data.listDogProfiles.items
+            });
         } catch (err) {
             console.log('error occured!');
             console.log(err);
@@ -29,19 +29,17 @@ const DogListScreen = ({route, navigation}) => {
         fetchDogs();
     }, []);
 
-    // useEffect(() => {
-    //     fetchDogs();
-    // });
+    console.log('state', state);
 
     return (
         <View>
             <Button 
                 title="Create Dog Profile"
                 onPress={() => navigation.navigate('DogCreate')} />
-            <Text style={styles.textStyle}>You have {dogs.length} dogs</Text>
+            <Text style={styles.textStyle}>You have {state.dogs.length} dogs</Text>
             <FlatList 
-                keyExtractor={dogs => dogs.dog}
-                data={dogs}
+                keyExtractor={(item, index) => index.toString()}
+                data={state.dogs}
                 renderItem={({item}) => {
                     return (
                         <ListItem 

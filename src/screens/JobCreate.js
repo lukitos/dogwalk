@@ -19,8 +19,12 @@ const JobCreate = () => {
     }
 
     const { control, handleSubmit, errors } = useForm();
+    // let id = uuidv4();F
     const onSubmit = data => {
-        const idData = {id: '6', status: 'unassigned', walker: 'unassigned'};
+        const idData = {id: Math.floor(Math.random() * 256), 
+          owner: 'cottonlukito@gmail.com',
+          status: 'unassigned', 
+          walker: 'unassigned'};
         const inputData = {...data, ...idData};
         console.log(inputData);
         processResults(inputData);
@@ -28,21 +32,6 @@ const JobCreate = () => {
 
     return (
     <View style={styles.container}>
-      <Controller
-        control={control}
-        render={({ onChange, onBlur, value }) => (
-          <TextInput
-            style={styles.input}
-            onBlur={onBlur}
-            onChangeText={value => onChange(value)}
-            placeholder="Enter owner's email"
-            value={value}
-          />
-        )}
-        name="owner"
-        rules={{ required: true }}
-        defaultValue=""
-      />
       {errors.owner && <Text>This is required.</Text>}
       <Controller
         control={control}

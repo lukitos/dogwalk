@@ -7,6 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { Auth } from 'aws-amplify';
 import { withAuthenticator } from 'aws-amplify-react-native';
 import ThemeContext from './src/utils/ThemeContext';
+import { DogwalkContextProvider } from './src/context/DogwalkContext';
 
 // Screens
 import OwnerTabScreen from './src/screens/OwnerTabScreen';
@@ -27,9 +28,17 @@ const App: () => React$Node = () => {
   }
 
   if (username.includes('owner')) {
-    return <OwnerTabScreen />
+    return (
+      <DogwalkContextProvider>
+        <OwnerTabScreen />
+      </DogwalkContextProvider>
+    );
   } else {
-    return <WalkerTabScreen />
+    return (
+      <DogwalkContextProvider>
+        <WalkerTabScreen />
+      </DogwalkContextProvider>
+    );
   }
 };
 

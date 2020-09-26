@@ -129,3 +129,23 @@ export const getRekognition = /* GraphQL */ `
     }
   }
 `;
+export const sendSns = /* GraphQL */ `
+  query SendSns(
+    $sns_type: String
+    $walker_email: String
+    $owner_email: String
+    $dog_name: String
+  ) {
+    sendSNS(
+      sns_type: $sns_type
+      walker_email: $walker_email
+      owner_email: $owner_email
+      dog_name: $dog_name
+    ) {
+      sns_type
+      walker_email
+      owner_email
+      dog_name
+    }
+  }
+`;

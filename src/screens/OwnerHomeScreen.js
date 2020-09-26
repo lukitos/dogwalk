@@ -20,8 +20,8 @@ const OwnerHomeScreen = (props) => {
 
     async function checkUser() {
         const user = await Auth.currentAuthenticatedUser();
-        console.log('OwnerHomeScreen user:', user);
-        console.log('OwnerHomeScreen user attributes: ', user.attributes);
+        // console.log('OwnerHomeScreen user:', user);
+        // console.log('OwnerHomeScreen user attributes: ', user.attributes);
         // updateCurrUser(user);
         // currUser = user.username;
         // let AWS = require('aws-sdk');
