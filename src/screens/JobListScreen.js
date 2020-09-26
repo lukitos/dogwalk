@@ -2,33 +2,58 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Button, FlatList, TouchableHighlight } from 'react-native';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { ListItem } from 'react-native-elements';
-import { queryJobProfilesByOwnerIndex } from '../graphql/queries';
+import { queryJobProfilesByOwnerIndex, queryJobProfilesByWalkerIndex } from '../graphql/queries';
 
-const JobListScreen = ({navigation}) => {
+const JobListScreen = ({ route, navigation }) => {
+    console.log('JobListScreen route', route);
     const [jobs, setJobs] = useState([]);
     const [email, updateEmail] = useState('');
-    const [owner, updateOwner] = useState('');
+    const [username, updateUserName] = useState('');
 
     useEffect(() => {
       checkUser(); 
     }, []);
 
     async function checkUser() {
-      const user = await Auth.currentAuthenticatedUser();
-      console.log('JobCreate username:', user.username);
-      console.log('JobCreate user attributes: ', user.attributes);
-      updateEmail(user.attributes.email);
-      updateOwner(user.username);
-      fetchJobs(user.username);
+        const user = await Auth.currentAuthenticatedUser();
+        console.log('JobListScreen username:', user.username);
+        console.log('JobListScreen user attributes: ', user.attributes);
+
+        updateEmail(user.attributes.email);
+        updateUserName(user.username);
+
+        let thename = user.username;
+        console.log('JobListScreen thename', thename);
+
+        if (thename.includes('owner')) {
+            console.log('JobListScreen - the owner');
+            fetchOwnerJobs(user.username);
+        } else {
+            console.log('JobListScreen - walker');
+            fetchWalkerJobs(user.username);
+        }        
     }
 
-    const fetchJobs = async (theOwner) => {
+    const fetchOwnerJobs = async (theOwner) => {
         try {
             const jobData = await API.graphql(
                 graphqlOperation(queryJobProfilesByOwnerIndex, {owner: theOwner})
             );
             console.log('JobListScreen jobData', jobData);
             const jobs = jobData.data.queryJobProfilesByOwnerIndex.items;
+            setJobs(jobs);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    const fetchWalkerJobs = async (theWalker) => {
+        try {
+            const jobData = await API.graphql(
+                graphqlOperation(queryJobProfilesByWalkerIndex, {walker: theWalker})
+            );
+            console.log('JobListScreen jobData', jobData);
+            const jobs = jobData.data.queryJobProfilesByWalkerIndex.items;
             setJobs(jobs);
         } catch (err) {
             console.log(err);
@@ -45,7 +70,7 @@ const JobListScreen = ({navigation}) => {
                     return (
                         <ListItem 
                             bottomDivider 
-                            onPress={() => navigation.navigate('JobDetail', { id: item.id})}>
+                            onPress={() => navigation.navigate('JobDetail', { id: item.id, username: username })}>
                             <ListItem.Content>
                             <ListItem.Title>{item.dog}</ListItem.Title>
                             <ListItem.Subtitle>{item.owner}</ListItem.Subtitle>
