@@ -79,6 +79,11 @@ const JobDetailScreen = ({ route, navigation }) => {
         }
     }
 
+    const showMap = () => {
+        console.log('showMap');
+        navigation.navigate('JobMap');
+    }
+
     const showStartButton = (function() {
         let isShown = true;
         if (username.includes('owner')) {
@@ -113,10 +118,20 @@ const JobDetailScreen = ({ route, navigation }) => {
     })();  
     console.log('JobDetailScreen showFinishButton', showFinishButton);
 
+    const showMapButton = (function() {
+        let isShown = false;
+        if (username.includes('owner')) {
+            isShown = true;
+        }
+        return isShown;
+    })();
+    console.log('JobDetailScreen showMapButton', showMapButton);
+
     return (
         <View>
             {showStartButton ? <Button title="Start Walking" onPress={startWalking} /> : null}
             {showFinishButton ? <Button title="Finish Walking" onPress={finishWalking} /> : null}
+            {showMapButton ? <Button title="Where is My Dog?" onPress={showMap} /> : null}
             <JobDetail job={results} />
         </View>
     );
