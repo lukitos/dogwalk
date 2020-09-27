@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Button } from 'react-native';
+import Geolocation from '@react-native-community/geolocation';
 import { API, graphqlOperation } from 'aws-amplify';
 import JobDetail from '../components/JobDetail';
 import { getJobProfile } from '../graphql/queries';
@@ -12,13 +13,21 @@ const JobDetailScreen = ({ route, navigation }) => {
     const username = route.params.username;
     console.log('JobDetailScreen jobid', jobid);
     console.log('JobDetailScreen username', username);
+
     const [results, setResults] = useState([]);
+    const [initialRegion, setInitialRegion] = useState({
+        latitude: 37.78825,
+        longitude: -122.4324,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421
+    });
 
     useEffect(() => {
         processResults();
     }, []);
 
     const processResults = async () => {
+        Geolocation.getCurrentPosition(info => console.log('JobDetailScreen Geolocation info', info));
         try {
             const resultData = await API.graphql(
                 graphqlOperation(getJobProfile, { id: jobid })
