@@ -35,7 +35,7 @@ const JobDetailScreen = ({ route, navigation }) => {
 
     const startWalking = async () => {
         const now = new Date();
-        console.log('JobDetailScreen now', now);
+        console.log('JobDetailScreen startWalking now', now);
 
         try {
             const resultData = await API.graphql(
@@ -56,8 +56,27 @@ const JobDetailScreen = ({ route, navigation }) => {
         }
     }
 
-    const finishWalking = () => {
-        console.log('JobDetailScreen finish walking');
+    const finishWalking = async () => {
+        const now = new Date();
+        console.log('JobDetailScreen finishWalking now', now);
+
+        try {
+            const resultData = await API.graphql(
+                graphqlOperation(sendSns, { sns_type: 'Finish Walking', dog_name: results.dog, owner_email: results.owner, walker_email: results.walker })
+            );
+            console.log('finishWalking items', resultData);
+        } catch (err) {
+            console.log(err);
+        }
+
+        try {
+            const resultData = await API.graphql(
+                graphqlOperation(updateJobProfile, {input: { id: jobid, end_time: now }})
+            );
+            console.log('finishWalking update resultData', resultData);
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     const showStartButton = (function() {
