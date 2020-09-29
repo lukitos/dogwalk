@@ -20,6 +20,7 @@ exports.handler = async (event, data, callback) => {
     console.log('dogwalkapprekognition event', event);
 
     var isDog = false;
+    var isChi = false;
 
     try {
         let rekogParams = {
@@ -37,12 +38,16 @@ exports.handler = async (event, data, callback) => {
         const labelNames = rekogResult.Labels.map((l) => l.Name.toLowerCase());
         console.log('labelNames', labelNames);
         if (labelNames.includes('dog')) {
-          isDog = true;
+            isDog = true;
         }
         console.log('isDog', isDog);
+        if (labelNames.includes('chihuahua')) {
+            isChi = true;
+        }
         const response = {
             statusCode: 200,
             valid: isDog,
+            validBreed: isChi,
             result: JSON.stringify(rekogResult),
             key: process.env.STORAGE_DOGPHOTOS_BUCKETNAME
         };

@@ -11,6 +11,7 @@ export const createDogProfile = /* GraphQL */ `
       age
       weight
       photokey
+      isValidBreed
     }
   }
 `;
@@ -24,6 +25,7 @@ export const updateDogProfile = /* GraphQL */ `
       age
       weight
       photokey
+      isValidBreed
     }
   }
 `;
@@ -37,6 +39,7 @@ export const deleteDogProfile = /* GraphQL */ `
       age
       weight
       photokey
+      isValidBreed
     }
   }
 `;

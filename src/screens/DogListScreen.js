@@ -10,7 +10,7 @@ const DogListScreen = ({route, navigation}) => {
     const [email, updateEmail] = useState('');
     const [owner, updateOwner] = useState('');
 
-    console.log('DogListScreen state', state);
+    // console.log('DogListScreen state', state);
     // console.log('DogListScreen graphqlOperation listDogProfiles', listDogProfiles);
 
     useEffect(() => {
@@ -19,7 +19,7 @@ const DogListScreen = ({route, navigation}) => {
 
     async function checkUser() {
         const user = await Auth.currentAuthenticatedUser();
-        console.log('DogListScreen user attributes: ', user.attributes);
+        // console.log('DogListScreen user attributes: ', user.attributes);
         updateEmail(user.attributes.email);
         updateOwner(user.username);
         fetchDogs(user.username);

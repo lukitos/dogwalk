@@ -11,6 +11,7 @@ export const getDogProfile = /* GraphQL */ `
       age
       weight
       photokey
+      isValidBreed
     }
   }
 `;
@@ -29,6 +30,7 @@ export const listDogProfiles = /* GraphQL */ `
         age
         weight
         photokey
+        isValidBreed
       }
       nextToken
     }
@@ -129,6 +131,7 @@ export const getRekognition = /* GraphQL */ `
       key
       breed
       valid
+      validBreed
       result
     }
   }

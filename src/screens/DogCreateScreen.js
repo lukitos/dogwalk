@@ -9,6 +9,7 @@ import { getRekognition } from '../graphql/queries';
 import { createDogProfile } from '../graphql/mutations';
 import { DogwalkContext } from '../context/DogwalkContext';
 import { listDogProfiles } from '../graphql/queries';
+// import DogOffer from '../components/DogOffer';
 
 const DogCreateScreen = ({ navigation }) => {
 
@@ -19,6 +20,8 @@ const DogCreateScreen = ({ navigation }) => {
   const [email, updateEmail] = useState('');
   const [owner, updateOwner] = useState('');
   const [state, dispatch] = useContext(DogwalkContext);
+
+  // const isBreed = false;
 
   useEffect(() => {
     checkUser(); 
@@ -77,10 +80,19 @@ const DogCreateScreen = ({ navigation }) => {
       const resultData = await API.graphql(
           graphqlOperation(getRekognition, { key: s3Key, breed: breed })
       );
-      const { valid } = resultData.data.getRekognition;
+      const { valid, validBreed } = resultData.data.getRekognition;
       setPhotoValidation(valid);
       if (valid) {
-        console.log('getRekognition valid', valid);
+        console.log('getRekognition valid dog', valid);
+        if (validBreed) {
+          console.log('getRekognition valid breed');
+          console.log('DogCreateScreen valid breed, date', data);
+          let updatedDogInput = {...data, ...{isValidBreed: 'yes'}};
+          data = {...updatedDogInput}
+          console.log('DogCreateScreen updatedDogInput', updatedDogInput);
+        } else {
+          console.log('getRekognition INVALID breed');
+        }
         processResults(data);
       } else {
         console.log('ERROR: getRekognition invalid', valid);

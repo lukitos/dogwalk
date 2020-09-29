@@ -6,6 +6,7 @@
 	age: String
 	weight: String
 	photokey: String
+	isValidBreed: String
 }
 
 input CreateJobProfileInput {
@@ -38,6 +39,7 @@ type DogProfile {
 	age: String
 	weight: String
 	photokey: String
+	isValidBreed: String
 }
 
 type DogProfileConnection {
@@ -67,6 +69,7 @@ type Rekognition {
 	key: String!
   	breed: String
 	valid: Boolean
+	validBreed: Boolean
 	result: String
 }
 
@@ -225,6 +228,7 @@ input UpdateDogProfileInput {
 	color: String
 	age: String
 	weight: String
+	isValidBreed: String
 }
 
 input UpdateJobProfileInput {

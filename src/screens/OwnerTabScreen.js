@@ -88,7 +88,7 @@ const OwnerTabScreen = (props) => {
             ),
           }}
         />
-        <Tab.Screen 
+        {/* <Tab.Screen 
           name="Post" 
           component={PostStackScreen} 
           options={{
@@ -97,7 +97,7 @@ const OwnerTabScreen = (props) => {
               <MaterialCommunityIcons name="plus-thick" color={color} size={size} />
             ),
           }}
-        />
+        /> */}
         <Tab.Screen 
           name="Dogs" 
           component={DogStackScreen} 
