@@ -92,43 +92,69 @@ const JobListScreen = ({ route, navigation }) => {
     processResults(inputData);
   }
 
-  return (
-    <View>
-    <Controller
-        control={control}
-        render={({ onChange, onBlur, value }) => (
-        <TextInput
-            style={styles.input}
-            onBlur={onBlur}
-            onChangeText={value => onChange(value)}
-            placeholder="Enter dog's name"
-            value={value}
+if (username.includes('owner')) {
+    console.log('JobListScreen showAddJob');
+    return (
+        <View>
+        <Controller
+            control={control}
+            render={({ onChange, onBlur, value }) => (
+            <TextInput
+                style={styles.input}
+                onBlur={onBlur}
+                onChangeText={value => onChange(value)}
+                placeholder="Enter dog's name"
+                value={value}
+            />
+            )}
+            name="dog"
+            defaultValue=""
         />
-        )}
-        name="dog"
-        defaultValue=""
-    />
-    <Button title="Submit" onPress={handleSubmit(onSubmit)} />
-    <Text style={styles.text}>You have {jobs.length} jobs</Text>
-      <FlatList 
-          keyExtractor={jobs => jobs.id}
-          data={jobs}
-          renderItem={({item}) => {
-              return (
-                  <ListItem 
-                      bottomDivider 
-                      onPress={() => navigation.navigate('JobDetail', { id: item.id, username: username })}>
-                      <ListItem.Content>
-                      <ListItem.Title>{item.dog}</ListItem.Title>
-                      <ListItem.Subtitle>{item.owner}</ListItem.Subtitle>
-                      </ListItem.Content>
-                      <ListItem.Chevron />
-                  </ListItem>
-              );
-          }}
-      />
-    </View>
-  );
+        <Button title="Post a Job" onPress={handleSubmit(onSubmit)} />
+        <Text style={styles.text}>You have {jobs.length} jobs</Text>
+        <FlatList 
+            keyExtractor={jobs => jobs.id}
+            data={jobs}
+            renderItem={({item}) => {
+                return (
+                    <ListItem 
+                        bottomDivider 
+                        onPress={() => navigation.navigate('JobDetail', { id: item.id, username: username })}>
+                        <ListItem.Content>
+                        <ListItem.Title>{item.dog}</ListItem.Title>
+                        <ListItem.Subtitle>{item.owner}</ListItem.Subtitle>
+                        </ListItem.Content>
+                        <ListItem.Chevron />
+                    </ListItem>
+                );
+            }}
+        />
+        </View>
+    );
+    } else {
+        return (
+            <View>
+            <Text style={styles.text}>You have {jobs.length} jobs</Text>
+            <FlatList 
+                keyExtractor={jobs => jobs.id}
+                data={jobs}
+                renderItem={({item}) => {
+                    return (
+                        <ListItem 
+                            bottomDivider 
+                            onPress={() => navigation.navigate('JobDetail', { id: item.id, username: username })}>
+                            <ListItem.Content>
+                            <ListItem.Title>{item.dog}</ListItem.Title>
+                            <ListItem.Subtitle>{item.owner}</ListItem.Subtitle>
+                            </ListItem.Content>
+                            <ListItem.Chevron />
+                        </ListItem>
+                    );
+                }}
+            />
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({

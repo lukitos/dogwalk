@@ -60,6 +60,7 @@ const JobDetailScreen = ({ route, navigation }) => {
                 graphqlOperation(updateJobProfile, {input: { id: jobid, start_time: now }})
             );
             console.log('startWalking update resultData', resultData);
+            navigation.navigate('JobList', { id: jobid, username: username })
         } catch (err) {
             console.log(err);
         }
@@ -82,7 +83,8 @@ const JobDetailScreen = ({ route, navigation }) => {
             const resultData = await API.graphql(
                 graphqlOperation(updateJobProfile, {input: { id: jobid, end_time: now }})
             );
-            console.log('finishWalking update resultData', resultData);
+            // console.log('finishWalking update resultData', resultData);
+            navigation.navigate('JobList', { id: jobid, username: username });
         } catch (err) {
             console.log(err);
         }

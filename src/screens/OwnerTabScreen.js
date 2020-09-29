@@ -9,7 +9,7 @@ import OwnerHomeScreen from './OwnerHomeScreen';
 import JobListScreen from './JobListScreen';
 import JobDetailScreen from './JobDetailScreen';
 import JobCreate from './JobCreate';
-// import JobMapScreen from './JobMapScreen';
+import JobMapScreen from './JobMapScreen';
 import DogListScreen from './DogListScreen';
 import DogDetailScreen from './DogDetailScreen';
 import DogCreateScreen from './DogCreateScreen';
@@ -36,7 +36,7 @@ const JobStackScreen = () => {
     <JobStack.Navigator initialRouteName="JobList">
       <JobStack.Screen name="JobList" component={JobListScreen} options={{ title: 'Job Profiles' }} />
       <JobStack.Screen name="JobDetail" component={JobDetailScreen} options={{ title: 'Job Profile' }} />
-      {/* <JobStack.Screen name="JobMap" component={JobMapScreen} options={{ title: 'Map' }} /> */}
+      <JobStack.Screen name="JobMap" component={JobMapScreen} options={{ title: 'Map' }} />
     </JobStack.Navigator>
   );
 }
