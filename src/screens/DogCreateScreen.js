@@ -12,7 +12,7 @@ import { listDogProfiles } from '../graphql/queries';
 
 const DogCreateScreen = ({ navigation }) => {
 
-  console.log('DogCreateScreen graphqlOp', listDogProfiles);
+  // console.log('DogCreateScreen graphqlOp', listDogProfiles);
 
   const [file, updateFile] = useState(null);
   const [photo, updatePhoto] = useState('');
@@ -27,7 +27,7 @@ const DogCreateScreen = ({ navigation }) => {
   async function checkUser() {
     const user = await Auth.currentAuthenticatedUser();
     // console.log('DogCreateScreen user:', user);
-    console.log('DogCreateScreen user attributes: ', user.attributes);
+    // console.log('DogCreateScreen user attributes: ', user.attributes);
     updateEmail(user.attributes.email);
     updateOwner(user.username);
   }
@@ -98,7 +98,7 @@ const DogCreateScreen = ({ navigation }) => {
                   filter: { owner: { beginsWith: owner } }
               })
           );
-          console.log('DogCreateScreen fetchDogs', dogData);
+          // console.log('DogCreateScreen fetchDogs', dogData);
           dispatch ({
               type: 'REFRESH',
               payload: dogData.data.listDogProfiles.items
@@ -141,7 +141,7 @@ const DogCreateScreen = ({ navigation }) => {
           ...data, 
           ...{owner: owner, photokey: result.key}
         };
-        console.log('onSubmit updated data', updatedData);
+        // console.log('onSubmit updated data', updatedData);
         validatePhoto(`public/${result.key}`, data.breed, updatedData);
       })
       .catch(err => console.log(err));

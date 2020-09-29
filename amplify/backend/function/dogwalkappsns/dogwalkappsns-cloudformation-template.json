@@ -97,7 +97,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-dogwalkapp-dev-163844-deployment",
-					"S3Key": "amplify-builds/dogwalkappsns-4f5141506a4a2b434b45-build.zip"
+					"S3Key": "amplify-builds/dogwalkappsns-75534e664e4957565936-build.zip"
 				}
 			}
 		},

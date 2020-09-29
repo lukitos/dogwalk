@@ -4,14 +4,11 @@ import { useForm, Controller } from 'react-hook-form';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { createJobProfile } from '../graphql/mutations';
 import { listJobProfiles } from '../graphql/queries';
-// import { DogwalkContext } from '../context/DogwalkContext';
 
-const JobCreate = () => {
+const JobCreate = ({ route, navigation }) => {
     const [results, setResults] = useState([]);
     const [email, updateEmail] = useState('');
     const [owner, updateOwner] = useState('');
-    // const [state, dispatch] = useContext(DogwalkContext);
-    // const [jobs, setJobs] = useState([]);
 
     useEffect(() => {
       checkUser(); 
@@ -25,32 +22,12 @@ const JobCreate = () => {
       updateOwner(user.username);
     }
 
-    // const fetchJobs = async () => {
-    //   try {
-    //       const jobData = await API.graphql(
-    //           graphqlOperation(listJobProfiles, {
-    //               filter: { owner: { beginsWith: owner } }
-    //           })
-    //       );
-    //       // console.log('JobListScreen jobData', jobData.data.listJobProfiles);
-    //       const jobs = jobData.data.listJobProfiles.items;
-    //       dispatch ({
-    //           type: 'REFRESH_JOB',
-    //           payload: jobData.data.listJobProfiles.items
-    //       });
-    //   } catch (err) {
-    //       console.log(err);
-    //   }
-    // }
-
     const processResults = async (inputData) => {
         try {
             const resultData = await API.graphql(
                 graphqlOperation(createJobProfile, { input: inputData })
             );
             console.log('JobCreate items', resultData.data);
-            // fetchJobs();
-            // navigation.navigate('JobList', { owner: owner, dog: dog});
         } catch (err) {
             console.log(err);
         }
@@ -66,6 +43,7 @@ const JobCreate = () => {
         const inputData = {...data, ...idData};
         console.log(inputData);
         processResults(inputData);
+        navigation.navigate('JobList', { owner: owner, dog: data.dog});
     }
 
     return (

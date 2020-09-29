@@ -19,12 +19,24 @@ exports.handler = async (event, context, callback) => {
       Message: `Dog walker ${event.walker_email} starts walking the dog`, 
       Subject: `Dog Walking for ${event.dog_name} Started`,
       TopicArn: process.env.SNS_TOPIC_ARN,
+      MessageAttributes: {
+        email: {
+          DataType: 'String',
+          StringValue: 'cottonlukito@gmail.com'
+        }
+      }
     };
   } else {
     var params = {
       Message: `Dog walker ${event.walker_email} finish walking the dog`, 
       Subject: `Dog Walking for ${event.dog_name} Completed`,
       TopicArn: process.env.SNS_TOPIC_ARN,
+      MessageAttributes: {
+        email: {
+          DataType: 'String',
+          StringValue: 'cottonlukito@gmail.com'
+        }
+      }
     };
   }
 

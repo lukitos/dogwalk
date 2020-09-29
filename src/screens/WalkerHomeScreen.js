@@ -2,7 +2,8 @@ import React from 'react';
 import { StyleSheet, View, Text, Button } from 'react-native';
 import { Auth } from 'aws-amplify';
 
-const WalkerHomeScreen = ({navigation}) => {
+const WalkerHomeScreen = ({ route, navigation }) => {
+    console.log('WalkerHomeScreen route', route);
     async function signOut() {
         try {
             await Auth.signOut({ global: true });

@@ -122,13 +122,7 @@ type Subscription {
 		age: String
 	): DogProfile
 		@aws_subscribe(mutations: ["deleteDogProfile"])
-	onCreateJobProfile(
-		id: String,
-		owner: String,
-		walker: String,
-		dog: String,
-		geo_url: String
-	): JobProfile
+	onCreateJobProfile: JobProfile
 		@aws_subscribe(mutations: ["createJobProfile"])
 	onUpdateJobProfile(
 		id: String,

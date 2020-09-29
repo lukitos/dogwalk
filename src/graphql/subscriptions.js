@@ -77,20 +77,8 @@ export const onDeleteDogProfile = /* GraphQL */ `
   }
 `;
 export const onCreateJobProfile = /* GraphQL */ `
-  subscription OnCreateJobProfile(
-    $id: String
-    $owner: String
-    $walker: String
-    $dog: String
-    $geo_url: String
-  ) {
-    onCreateJobProfile(
-      id: $id
-      owner: $owner
-      walker: $walker
-      dog: $dog
-      geo_url: $geo_url
-    ) {
+  subscription OnCreateJobProfile {
+    onCreateJobProfile {
       id
       owner
       owner_email
