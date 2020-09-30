@@ -93,6 +93,7 @@ const JobDetailScreen = ({ route, navigation }) => {
     const showMap = () => {
         console.log('showMap');
         navigation.navigate('JobMap');
+        // navigation.navigate('DogSuccess');
     }
 
     const showStartButton = (function() {

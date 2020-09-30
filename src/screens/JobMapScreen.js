@@ -3,7 +3,9 @@ import { StyleSheet, View, Text } from 'react-native';
 import MapView, { Polyline } from "react-native-maps";
 
 const JobMapScreen = ({ route, navigation }) => {
-    console.log('JobMapScreen route', route);
+    // console.log('JobMapScreen route', route);
+    const [index, setIndex] = useState(2);
+    const [polylinePath, setPolylinePath] = useState([]);
 
     // 2222 Vet
     const [Berlin, setBerlin] = useState({
@@ -17,6 +19,58 @@ const JobMapScreen = ({ route, navigation }) => {
         latitude: 30.387081
     });
 
+    // Children of Austin
+    const [austinChild, setAustinChild] = useState({
+      latitude: 30.390791, 
+      longitude: -97.846902
+    });
+
+    // Park 1
+    const [park1, setPark1] = useState({
+      latitude: 30.391790, 
+      longitude: -97.847369
+    });
+
+    // Park 2
+    const [park2, setPark2] = useState({
+      latitude: 30.392845, 
+      longitude: -97.846296
+    });
+
+    const fullPath = [Berlin, austinChild, park1, park2, Franfurt];
+
+    useEffect(() => {
+
+      const interval = setInterval(() => {      
+
+        if (polylinePath.length < fullPath.length) {
+          console.log('***************');
+          console.log('Index before', index);
+
+          const polylinePathLocal = [
+              ...fullPath.slice(0, index)
+          ];   
+          console.log('Local polyline', polylinePathLocal);         
+          setPolylinePath(polylinePathLocal);
+          setIndex(index + 1);  
+
+          console.log('Index after', index);
+          console.log('AnimatingPolylineComponent polylinePath', polylinePath);
+          console.log('polylinpath length:', polylinePath.length); 
+          console.log('fullpath length:', fullPath.length);
+        } else {
+          //setPolylinePath({polylinePath: []});
+          clearInterval(interval);
+        }
+      }, 2000);
+      return () => clearInterval(interval);
+
+    }, [index, polylinePath]);
+
+    //   return (
+    //   );
+    // }
+
     return (
     <>
       <MapView
@@ -28,14 +82,18 @@ const JobMapScreen = ({ route, navigation }) => {
           longitudeDelta: 0.0421
         }}
       >
-        <Polyline 
-          coordinates={[Berlin, Franfurt]} 
-          strokeColor={'#f00'}
-          strokeWidth={6}
-        />
+      <Polyline 
+        coordinates={polylinePath} 
+        strokeColor={'#f00'}
+        strokeWidth={6}
+      />
       </MapView>
     </>
     );
+
+    // return (
+    //   <Text>blah</Text>
+    // );
 }
 
 export default JobMapScreen;

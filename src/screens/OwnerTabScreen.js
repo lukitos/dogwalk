@@ -37,6 +37,7 @@ const JobStackScreen = () => {
       <JobStack.Screen name="JobList" component={JobListScreen} options={{ title: 'Job Profiles' }} />
       <JobStack.Screen name="JobDetail" component={JobDetailScreen} options={{ title: 'Job Profile' }} />
       <JobStack.Screen name="JobMap" component={JobMapScreen} options={{ title: 'Map' }} />
+      <DogStack.Screen name="DogSuccess" component={DogSuccessScreen} options={{ title: 'Success' }} />
     </JobStack.Navigator>
   );
 }
@@ -57,7 +58,6 @@ const DogStackScreen = () => {
       <DogStack.Screen name="DogList" component={DogListScreen} options={{ title: 'Dog Profiles' }} />
       <DogStack.Screen name="DogDetail" component={DogDetailScreen} options={{ title: 'Dog Profile' }} />
       <DogStack.Screen name="DogCreate" component={DogCreateScreen} options={{ title: 'Dog Profile' }} />
-      <DogStack.Screen name="DogSuccess" component={DogSuccessScreen} options={{ title: 'Success' }} />
     </DogStack.Navigator>
   );
 }
