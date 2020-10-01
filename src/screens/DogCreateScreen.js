@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, TextInput, Button, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
+import { Text, Input, Button, Divider } from 'react-native-elements';
 import { useForm, Controller } from 'react-hook-form';
 import { API, Storage, graphqlOperation } from 'aws-amplify';
 import { Auth } from 'aws-amplify';
@@ -9,12 +10,8 @@ import { getRekognition } from '../graphql/queries';
 import { createDogProfile } from '../graphql/mutations';
 import { DogwalkContext } from '../context/DogwalkContext';
 import { listDogProfiles } from '../graphql/queries';
-// import DogOffer from '../components/DogOffer';
 
 const DogCreateScreen = ({ navigation }) => {
-
-  // console.log('DogCreateScreen graphqlOp', listDogProfiles);
-
   const [file, updateFile] = useState(null);
   const [photo, updatePhoto] = useState('');
   const [email, updateEmail] = useState('');
@@ -29,13 +26,12 @@ const DogCreateScreen = ({ navigation }) => {
 
   async function checkUser() {
     const user = await Auth.currentAuthenticatedUser();
-    // console.log('DogCreateScreen user:', user);
-    // console.log('DogCreateScreen user attributes: ', user.attributes);
     updateEmail(user.attributes.email);
     updateOwner(user.username);
   }
   
   const chooseImage = () => {
+    // setPhotoValidation(false);
     let options = {
       title: 'Upload Dog Photo',
       takePhotoButtonTitle: 'Take a Photo',
@@ -74,24 +70,20 @@ const DogCreateScreen = ({ navigation }) => {
 
   const [ photoValidation, setPhotoValidation ] = useState(true);
   const validatePhoto = async (s3Key, breed, data) => {
-    console.log('in validatePhoto s3Key ', s3Key);
-    console.log('in validatePhoto breed ', breed);
     try {
       const resultData = await API.graphql(
           graphqlOperation(getRekognition, { key: s3Key, breed: breed })
       );
+      
       const { valid, validBreed } = resultData.data.getRekognition;
       setPhotoValidation(valid);
       if (valid) {
-        console.log('getRekognition valid dog', valid);
         if (validBreed) {
-          console.log('getRekognition valid breed');
-          console.log('DogCreateScreen valid breed, date', data);
           let updatedDogInput = {...data, ...{isValidBreed: 'yes'}};
           data = {...updatedDogInput}
           console.log('DogCreateScreen updatedDogInput', updatedDogInput);
         } else {
-          console.log('getRekognition INVALID breed');
+          console.log('getRekognition NOT chihuahua breed');
         }
         processResults(data);
       } else {
@@ -104,13 +96,11 @@ const DogCreateScreen = ({ navigation }) => {
 
   const fetchDogs = async () => {
       try {
-          // const dogData = await API.graphql(graphqlOperation(listDogProfiles));
           const dogData = await API.graphql(
               graphqlOperation(listDogProfiles, {
                   filter: { owner: { beginsWith: owner } }
               })
           );
-          // console.log('DogCreateScreen fetchDogs', dogData);
           dispatch ({
               type: 'REFRESH',
               payload: dogData.data.listDogProfiles.items
@@ -147,13 +137,10 @@ const DogCreateScreen = ({ navigation }) => {
 
     Storage.put(file.name, blob, { contentType: file.type })
       .then (result => {
-        // console.log('onSubmit type', file.type);
-        // console.log('onSubmit result', result);
         updatedData = {
           ...data, 
           ...{owner: owner, photokey: result.key}
         };
-        // console.log('onSubmit updated data', updatedData);
         validatePhoto(`public/${result.key}`, data.breed, updatedData);
       })
       .catch(err => console.log(err));
@@ -162,12 +149,11 @@ const DogCreateScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+    <View>
       <Controller
         control={control}
         render={({ onChange, onBlur, value }) => (
-          <TextInput
+          <Input
             style={styles.input}
             onBlur={onBlur}
             onChangeText={value => onChange(value)}
@@ -181,7 +167,7 @@ const DogCreateScreen = ({ navigation }) => {
       <Controller
         control={control}
         render={({ onChange, onBlur, value }) => (
-          <TextInput
+          <Input
             style={styles.input}
             onBlur={onBlur}
             onChangeText={value => onChange(value)}
@@ -192,35 +178,41 @@ const DogCreateScreen = ({ navigation }) => {
         name="breed"
         defaultValue=""
       />
-      <Button title="Upload Photo" onPress={chooseImage} />
-      {file ? <Image source={{uri: file.uri}} style={{ width: 100, height: 100 }} /> : null}
-      <Text>{file ? file.name : null}</Text>
-      {photoValidation ? null : <Text>Invalid Photo, Please try uploading again!</Text>}
+      <View style={styles.photo}>
+      {file ? <Image source={{uri: file.uri}} style={styles.tinyLogo} /> : null}
+      <Text styles={styles.fileName}>{file ? file.name : null}</Text>
+      {photoValidation ? null : <Text styles={styles.error}>Invalid Photo, Please try uploading again!</Text>}
+      </View>
+      <View style={styles.button}>
+        <Button title="Upload Photo" onPress={chooseImage} />
+        <Divider style={styles.divider} />
+        <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-    // container: {
-    //     paddingTop: 5,
-    //     padding: 8,
-    // },
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
+    button: {
+      margin: 15,
+    },
+    divider: {
+      margin: 5,
     },
     tinyLogo: {
-      width: "100%",
-      height: "100%",
+      width: 250,
+      height: 250,
+      borderRadius: 20,
     },
-    input: {
-        backgroundColor: 'white',
-        height: 40,
-        padding: 10,
-        borderRadius: 4,
+    photo: {
+      alignItems: 'center',
     },
+    filename: {
+      fontSize: 20,
+    },
+    error: {
+      color: 'red',
+    }
 });
 
 export default DogCreateScreen;

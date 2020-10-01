@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TextInput, Button, FlatList, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, Text, FlatList, TouchableHighlight } from 'react-native';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { useForm, Controller } from 'react-hook-form';
-import { ListItem } from 'react-native-elements';
+import { Button, ListItem, Input } from 'react-native-elements';
 import { createJobProfile } from '../graphql/mutations';
 import { queryJobProfilesByOwnerIndex, queryJobProfilesByWalkerIndex } from '../graphql/queries';
 // import { onCreateJobProfile } from '../graphql/subscriptions';
@@ -95,12 +95,11 @@ const JobListScreen = ({ route, navigation }) => {
 if (username.includes('owner')) {
     console.log('JobListScreen showAddJob');
     return (
-        <View>
+        <View style={styles.containerStyle}>
         <Controller
             control={control}
             render={({ onChange, onBlur, value }) => (
-            <TextInput
-                style={styles.input}
+            <Input
                 onBlur={onBlur}
                 onChangeText={value => onChange(value)}
                 placeholder="Enter dog's name"
@@ -133,7 +132,7 @@ if (username.includes('owner')) {
     );
     } else {
         return (
-            <View>
+            <View style={styles.containerStyle}>
             <Text style={styles.text}>You have {jobs.length} jobs</Text>
             <FlatList 
                 keyExtractor={jobs => jobs.id}
@@ -158,6 +157,10 @@ if (username.includes('owner')) {
 }
 
 const styles = StyleSheet.create({
+    containerStyle: {
+        marginHorizontal: 15,
+        marginVertical: 15,
+    },
     text: {
         marginHorizontal: 15,
         marginVertical: 15,

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
-import { Image, Card } from 'react-native-elements';
+import { View, Text, StyleSheet } from 'react-native';
+import { Button, Image } from 'react-native-elements';
 import { Auth } from 'aws-amplify';
 
 const OwnerHomeScreen = (props) => {
@@ -27,23 +27,15 @@ const OwnerHomeScreen = (props) => {
     }
 
     return (
-        <View>
+        <View style={styles.containerStyle}>
+            <Text style={styles.text}>Welcome</Text>
+            <Text style={styles.ownerText}>{owner}</Text>
+            <View style={styles.imageContainer}>
+                <Image source={{ uri: ownerPhoto }} style={styles.image} />
+            </View>
             <Button
                 title='Sign Out'
                 onPress={signOut} />
-            <Text style={styles.text}>Welcome {owner}</Text>
-            <Card>
-            <Card.Title>CARD WITH DIVIDER</Card.Title>
-                <Card.Divider/>
-                        <View>
-                        <Image
-                            style={styles.image}
-                            resizeMode="cover"
-                            source={{ uri: ownerPhoto }}
-                        />
-                        <Text style={styles.name}>{owner}</Text>
-                        </View>
-            </Card>
         </View>
     );
 }
@@ -51,11 +43,23 @@ const OwnerHomeScreen = (props) => {
 export default OwnerHomeScreen;
 
 const styles = StyleSheet.create({
-    text: {
-        fontSize: 30
+    containerStyle: {
+        flex: 1,
+        alignItems: 'center',
+        marginHorizontal: 15,
+        marginVertical: 15,
+    },
+    imageContainer: {
+        margin: 15,
     },
     image: {
-        width: 100,
-        height: 100
+        width: 375,
+        height: 375,
+    },
+    text: {
+        fontSize: 30,
+    },
+    ownerText: {
+        fontSize: 20,
     }
 });

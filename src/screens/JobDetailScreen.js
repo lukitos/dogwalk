@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
+import { Button, Divider } from 'react-native-elements';
 // import Geolocation from '@react-native-community/geolocation';
 import { API, graphqlOperation } from 'aws-amplify';
 import JobDetail from '../components/JobDetail';
@@ -8,7 +9,7 @@ import { sendSns } from '../graphql/queries';
 import { updateJobProfile } from '../graphql/mutations';
 
 const JobDetailScreen = ({ route, navigation }) => {
-    console.log('JobDetailScreen route', route);
+    // console.log('JobDetailScreen route', route);
     const jobid = route.params.id;
     const username = route.params.username;
     console.log('JobDetailScreen jobid', jobid);
@@ -140,19 +141,26 @@ const JobDetailScreen = ({ route, navigation }) => {
     console.log('JobDetailScreen showMapButton', showMapButton);
 
     return (
-        <View>
+        <View style={styles.container}>
+            <JobDetail job={results} />
+            <Divider style={styles.divider} />
             {showStartButton ? <Button title="Start Walking" onPress={startWalking} /> : null}
             {showFinishButton ? <Button title="Finish Walking" onPress={finishWalking} /> : null}
             {showMapButton ? <Button title="Where is My Dog?" onPress={showMap} /> : null}
-            <JobDetail job={results} />
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        margin: 15,
+    },
     text: {
         fontSize: 30
-    }
+    },
+    divider: {
+      margin: 5,
+    },
 });
 
 export default JobDetailScreen;

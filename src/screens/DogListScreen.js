@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, Text, FlatList } from 'react-native';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
-import { ListItem, Button } from 'react-native-elements';
+import { ListItem, Button, Header } from 'react-native-elements';
 import { listDogProfiles } from '../graphql/queries';
 import { DogwalkContext } from '../context/DogwalkContext';
 
@@ -49,7 +49,7 @@ const DogListScreen = ({route, navigation}) => {
     console.log('state', state);
 
     return (
-        <View>
+        <View style={styles.containerStyle}>
             <Button 
                 title="Create Dog Profile"
                 onPress={() => navigation.navigate('DogCreate')} />
@@ -76,6 +76,10 @@ const DogListScreen = ({route, navigation}) => {
 }
 
 const styles = StyleSheet.create({
+    containerStyle: {
+        marginHorizontal: 15,
+        marginVertical: 15,
+    },
     textStyle: {
         marginHorizontal: 15,
         marginVertical: 15,
