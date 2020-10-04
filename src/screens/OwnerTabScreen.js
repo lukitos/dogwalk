@@ -14,6 +14,9 @@ import DogListScreen from './DogListScreen';
 import DogDetailScreen from './DogDetailScreen';
 import DogCreateScreen from './DogCreateScreen';
 import DogSuccessScreen from './DogSuccessScreen';
+import DogOffer from '../components/DogOffer';
+import CoffeeOffer from '../components/CoffeeOffer';
+import DogOfferScreen from './DogOfferScreen';
 
 const Tab = createBottomTabNavigator();
 const OwnerStack = createStackNavigator();
@@ -42,12 +45,23 @@ const JobStackScreen = () => {
   );
 }
 
+// const PostStack = createStackNavigator();
+// const PostStackScreen = () => {
+//   return (
+//     <JobStack.Navigator>
+//       <JobStack.Screen name="JobCreate" component={JobCreate} options={{ title: 'New Job Profile' }} />
+//     </JobStack.Navigator>
+//   );
+// }
+
 const PostStack = createStackNavigator();
 const PostStackScreen = () => {
   return (
-    <JobStack.Navigator>
-      <JobStack.Screen name="JobCreate" component={JobCreate} options={{ title: 'New Job Profile' }} />
-    </JobStack.Navigator>
+    <PostStack.Navigator>
+      <PostStack.Screen name="Offer" component={DogOfferScreen} options={{ title: 'Offers' }} />
+      <PostStack.Screen name="CoffeeOffer" component={CoffeeOffer} options={{ title: 'Offers' }} />
+      <PostStack.Screen name="DogOffer" component={DogOffer} options={{ title: 'Offers' }} />
+    </PostStack.Navigator>
   );
 }
 
@@ -88,16 +102,6 @@ const OwnerTabScreen = (props) => {
             ),
           }}
         />
-        {/* <Tab.Screen 
-          name="Post" 
-          component={PostStackScreen} 
-          options={{
-            tabBarLabel: 'Post',
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="plus-thick" color={color} size={size} />
-            ),
-          }}
-        /> */}
         <Tab.Screen 
           name="Dogs" 
           component={DogStackScreen} 
@@ -105,6 +109,16 @@ const OwnerTabScreen = (props) => {
             tabBarLabel: 'Dogs',
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="dog-side" color={color} size={size} />
+            ),
+          }}
+        />
+        <Tab.Screen 
+          name="Offers" 
+          component={PostStackScreen} 
+          options={{
+            tabBarLabel: 'Offers',
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="currency-usd" color={color} size={size} />
             ),
           }}
         />

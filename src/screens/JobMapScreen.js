@@ -7,34 +7,34 @@ const JobMapScreen = ({ route, navigation }) => {
     const [index, setIndex] = useState(2);
     const [polylinePath, setPolylinePath] = useState([]);
 
-    // 2222 Vet
+    // Fedex
     const [Berlin, setBerlin] = useState({
-        longitude: -97.845191,
-        latitude: 30.393351
+        longitude: -97.743160,
+        latitude: 30.266166, 
     }); 
 
-    // ACF
+    // Gold Gym
     const [Franfurt, setFranfurt] = useState({
-        longitude: -97.847237,
-        latitude: 30.387081
+        longitude: -97.741765,
+        latitude: 30.267760, 
     });
 
-    // Children of Austin
+    // Starbucks
     const [austinChild, setAustinChild] = useState({
-      latitude: 30.390791, 
-      longitude: -97.846902
+      latitude: 30.268465, 
+      longitude: -97.742903,
     });
 
-    // Park 1
+    // Roaring Form
     const [park1, setPark1] = useState({
-      latitude: 30.391790, 
-      longitude: -97.847369
+      latitude: 30.269317, 
+      longitude: -97.742130
     });
 
-    // Park 2
+    // Perry Steakhouse
     const [park2, setPark2] = useState({
-      latitude: 30.392845, 
-      longitude: -97.846296
+      latitude: 30.269586, 
+      longitude: -97.743493
     });
 
     const fullPath = [Berlin, austinChild, park1, park2, Franfurt];
@@ -67,19 +67,15 @@ const JobMapScreen = ({ route, navigation }) => {
 
     }, [index, polylinePath]);
 
-    //   return (
-    //   );
-    // }
-
     return (
     <>
       <MapView
         style={{ flex: 1 }}
         initialRegion={{
-          latitude: 30.395093,
-          longitude: -97.827884,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421
+          latitude: 30.268659, 
+          longitude: -97.742699,
+          latitudeDelta: 0.00222,
+          longitudeDelta: 0.00221
         }}
       >
       <Polyline 
